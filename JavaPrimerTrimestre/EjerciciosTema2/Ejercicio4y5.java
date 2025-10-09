@@ -1,6 +1,6 @@
 package JavaPrimerTrimestre.EjerciciosTema2;
 
-public class Ejercicio5y6 {
+public class Ejercicio4y5 {
     public static void main(String[] args) {
         Double pesetas_por_euro = 166.386;
         int euros= 100;
