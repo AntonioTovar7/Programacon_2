@@ -1,3 +1,4 @@
+package EjerciciosClase;
 public class EjSentenciaWhile{
     public static void main(String[] args) {
         

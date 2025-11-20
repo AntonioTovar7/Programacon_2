@@ -1,3 +1,4 @@
+package EjerciciosClase;
 
 
 
@@ -9,7 +10,7 @@ public class EjSentenciaWhile2{
         System.out.println("Introduce tu edad: ");
         edad = Integer.parseInt(System.console().readLine());
 
-        for (int i = 0; i<=edad; i++){
+        for (int i = 1; i<=edad; i++){
 
             System.out.printf("%d,", i);
         }
