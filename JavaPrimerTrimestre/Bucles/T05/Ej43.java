@@ -1,5 +1,4 @@
 package T05;
-
 public class Ej43 {
 
     public static void main(String[] args) throws InterruptedException {
