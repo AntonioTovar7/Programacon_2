@@ -5,37 +5,80 @@ public class Matematicas {
         int numero;
         int potencia;
         int n;
+        int numero_elegido;
+        int numeros_quitar;
+        int numero_pega;
+        int inicio;
+        int fin;
 
         System.out.print("introduzca un número: ");
         numero = Integer.parseInt(System.console().readLine());
 
-        if (esCapicua(numero)) {
-            System.out.println("Es capicúa");
-        }else{
-            System.out.println("No es capicúa");
-        }
+        // if (esCapicua(numero)) {
+        //     System.out.println("Es capicúa");
+        // }else{
+        //     System.out.println("No es capicúa");
+        // }
 
-        if (esPrimo(numero)) {
-            System.out.println("Es primo");
-        }else{
-            System.out.println("No es primo");
-        }
+        // if (esPrimo(numero)) {
+        //     System.out.println("Es primo");
+        // }else{
+        //     System.out.println("No es primo");
+        // }
 
-        System.out.println(siguientePrimo(numero));
+        // System.out.println(siguientePrimo(numero));
 
-        System.out.printf("a que numero deseas elevar el %d ",  numero);
-        potencia = Integer.parseInt(System.console().readLine());
+        // System.out.printf("a que numero deseas elevar el %d ",  numero);
+        // potencia = Integer.parseInt(System.console().readLine());
 
-        System.out.println(numeroElevado(numero, potencia));
+        // System.out.println(numeroElevado(numero, potencia));
 
-        System.out.printf("El %d tiene %d digitos\n",numero, digitos(numero));
+        // System.out.printf("El %d tiene %d digitos\n",numero, digitos(numero));
 
-        System.out.printf("El %d volteado es %d\n",numero, voltea(numero));
+        // System.out.printf("El %d volteado es %d\n",numero, voltea(numero));
 
-        System.out.print("Qué dígito le gustaría exponer: ");
-        n = Integer.parseInt(System.console().readLine());
+        // System.out.print("Qué dígito le gustaría exponer: ");
+        // n = Integer.parseInt(System.console().readLine());
 
-        System.out.println(digitoN(numero, n));
+        // System.out.println(digitoN(numero, n));
+
+        // System.out.print("Que dígito desea ubicar: ");
+        // numero_elegido = Integer.parseInt(System.console().readLine());
+
+        // System.out.println(posicionDeDigito(numero, numero_elegido));
+
+
+        // System.out.print("Cuantos dígitos desea quitar por detras: ");
+        // numeros_quitar = Integer.parseInt(System.console().readLine());
+
+        // System.out.println(quitaPorDetras(numero, numeros_quitar));
+
+
+        // System.out.print("Cuantos dígitos desea quitar por delante: ");
+        // numeros_quitar = Integer.parseInt(System.console().readLine());
+
+        // System.out.println(quitaPorDelante(numero, numeros_quitar));
+
+
+        // System.out.print("Cuantos dígitos desea pegar por detras: ");
+        // numero_pega = Integer.parseInt(System.console().readLine());
+
+        // System.out.println(pegaPorDetras(numero, numero_pega));
+
+
+        // System.out.print("Cuantos dígitos desea pegar por delante: ");
+        // numero_pega = Integer.parseInt(System.console().readLine());
+
+        // System.out.println(pegaPorDelante(numero, numero_pega));
+
+
+        System.out.print("Que posición de inicio desea obetener: ");
+            inicio = Integer.parseInt(System.console().readLine());
+        System.out.print("Que posición de final desea obetener: ");
+            fin = Integer.parseInt(System.console().readLine());
+
+
+        System.out.println(trozoDeNumero(numero, inicio, fin));
     }
 
 
@@ -184,6 +227,125 @@ public class Matematicas {
         
         return n_volt%10;
     }
+
+    public static int posicionDeDigito(int numero, int numero_elegido){
+        int posicion = 0;
+        int numerin;
+        int temporal;
+        boolean es = false;
+
+        numerin = voltea(numero);
+        
+        while ((posicion<digitos(numero)) && (!es)) {
+            temporal=numerin%10;
+            numerin/=10;
+
+            if (temporal == numero_elegido) {
+                es = true;
+                posicion++;
+            }else{
+                posicion++;
+            }
+
+            if ((posicion == digitos(numero)) && (temporal!=numero_elegido)) {
+                posicion = -1;
+                es = true;
+            }
+        }
+        
+        return posicion;
+    }
+
+    /**
+     * 
+     * @param numero
+     * @param numeros_quitar
+     * @return
+     */
+    public static int quitaPorDetras(int numero, int numeros_quitar){
+
+        for(int i = 0; i<numeros_quitar;i++){
+            numero/=10;
+        }
+
+        return numero;
+    }
+
+    /**
+     * 
+     * @param numero
+     * @param numeros_quitar
+     * @return
+     */
+    public static int quitaPorDelante(int numero, int numeros_quitar){
+        
+        numero = voltea(numero);
+        for(int i = 0;i<numeros_quitar;i++){
+            numero/=10;
+        }
+        numero = voltea(numero);
+
+        return numero;
+
+    }
+
+    /**
+     * 
+     * @param numero
+     * @param numero_pega
+     * @return
+     */
+    public static int pegaPorDetras(int numero, int numero_pega){
+        for(int i = 0;i<digitos(numero_pega);i++){
+            numero*=10;
+        }
+
+        return numero+numero_pega;
+    }
+
+    /**
+     * 
+     * @param numero
+     * @param numero_pega
+     * @return
+     */
+    public static int pegaPorDelante(int numero, int numero_pega){
+            for(int i = 0;i<digitos(numero);i++){
+                numero_pega*=10;
+        }
+        return numero+numero_pega;
+    }   
+     
+
+    public static int trozoDeNumero(int numero, int inicio, int fin){
+        
+        int posicion = 0;
+
+    for(int i = 0;i<digitos(numero);i++){
+            posicion++;
+        if(fin!=inicio){
+            if (posicion==inicio) {
+            numero = voltea(numero);
+            posicion = 0;
+            while (posicion<inicio) {
+                numero/=10;
+                posicion++;
+            }
+            }else if(posicion==fin){
+            numero = voltea(numero);
+            posicion = (fin-inicio);
+            while (posicion<=fin) {
+                numero/=10;
+                posicion++;
+            }
+            }
+        }else{
+            numero = digitoN(numero, inicio);
+        }
+    }
+        return numero;
+    }
+    
 }
 
 
