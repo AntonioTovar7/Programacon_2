@@ -1,6 +1,7 @@
+package JavaSegundoTrimestre.Arrays;
 import java.util.Scanner;
 
-public class skldfjgshuidg {
+public class Ej28 {
 
     static final int FILAS = 4;
     static final int COLUMNAS = 5;
@@ -10,7 +11,6 @@ public class skldfjgshuidg {
 
     static Scanner sc = new Scanner(System.in);
 
-    // Método principal: coordina la ejecución del programa y controla el flujo del juego
     public static void main(String[] args) {
         
         inicializarTablero();
@@ -34,19 +34,26 @@ public class skldfjgshuidg {
             if (x == minaX && y == minaY) {
                 System.out.println("¡BOOOM! Lo siento, has perdido.");
                 finJuego = true;
+
             } else if (x == tesoroX && y == tesoroY) {
                 System.out.println("¡Enhorabuena! ¡Has encontrado el tesoro!");
                 finJuego = true;
+                tablero[tesoroY][tesoroX] = 'T';
+                tablero[minaY][minaX] = 'M';
             } else {
                 tablero[y][x] = 'X';
+                if (Math.abs(x-minaX)<=1 && Math.abs(y-minaY)<=1 ) {
+                    System.out.println("Cuidado, hay una mina cerca...");
+                }
             }
         }
 
         mostrarTableroFinal();
     }
 
-    // Inicializa el tablero con espacios vacíos, lo cual es necesario para partir de un estado limpio
-    static void inicializarTablero() {
+
+    // Inicio tablero en blanco
+    public static void inicializarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
                 tablero[i][j] = ' ';
@@ -54,44 +61,46 @@ public class skldfjgshuidg {
         }
     }
 
-    // Muestra el tablero parcial durante la partida para informar al jugador de sus intentos
-    static void mostrarTablero() {
+    // Muestra tablero jugando
+    public static void mostrarTablero() {
         for (int i = FILAS - 1; i >= 0; i--) {
             System.out.print(i + "|");
-            
-                System.out.print(tablero[FILAS-1][COLUMNAS-1]);
+                for(int j = 0;j<COLUMNAS;j++){
+                System.out.print(" " + tablero[i][j]);
+                }
             
             System.out.println();
         }
 
-        System.out.println("  ---------");
-        System.out.print("  ");
+        System.out.println("  -----------");
+        System.out.print("   ");
         for (int i = 0; i < COLUMNAS; i++) {
             System.out.print(i + " ");
         }
         System.out.println("\n");
     }
 
-    // Coloca la mina y el tesoro en posiciones aleatorias distintas, garantizando una partida válida
-    static void colocarMinaYTesoro() {
+    // Coloca la mina y el tesoro en posiciones aleatorias distintas
+    public static void colocarMinaYTesoro() {
         
 
-        minaX = (int)(1+COLUMNAS * Math.random());
-        minaY = (int)(1+FILAS * Math.random());
+        minaX = (int)(COLUMNAS * Math.random());
+        minaY = (int)(FILAS * Math.random());
 
         do {
-            tesoroX = (int)(1+COLUMNAS * Math.random());
-            tesoroX = (int)(1+FILAS * Math.random());
+            tesoroX = (int)(COLUMNAS * Math.random());
+            tesoroY = (int)(FILAS * Math.random());
         } while (tesoroX == minaX && tesoroY == minaY);
     }
 
 
 
-    // Muestra el tablero completo al finalizar la partida, revelando mina y tesoro
-    static void mostrarTableroFinal() {
-        tablero[minaY][minaX] = 'M';
+    // Muestra el tablero al final y revela el tesoro y la mina
+    public static void mostrarTableroFinal() {
+        
         tablero[tesoroY][tesoroX] = 'T';
-
+        tablero[minaY][minaX] = 'M';
+        
         System.out.println("\nTABLERO FINAL:");
 
         for (int i = FILAS - 1; i >= 0; i--) {
@@ -103,7 +112,7 @@ public class skldfjgshuidg {
         }
 
         System.out.println("  ---------");
-        System.out.print("  ");
+        System.out.print("   ");
         for (int i = 0; i < COLUMNAS; i++) {
             System.out.print(i + " ");
         }

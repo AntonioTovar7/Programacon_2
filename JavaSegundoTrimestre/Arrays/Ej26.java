@@ -39,7 +39,7 @@ public class Ej26 {
             
             System.out.print(contador + " ");
         }
-        System.out.print("\t| " + sumtotal);
+        System.out.print(" | " + sumtotal);
         
     }
 }
