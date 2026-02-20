@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class Ej28 {
 
-    static final int FILAS = 4;
-    static final int COLUMNAS = 5;
+    static final int FILAS = 8;
+    static final int COLUMNAS = 9;
 
     static char[][] tablero = new char[FILAS][COLUMNAS];
     static int minaX, minaY, tesoroX, tesoroY;
@@ -66,16 +66,18 @@ public class Ej28 {
         for (int i = FILAS - 1; i >= 0; i--) {
             System.out.print(i + "|");
                 for(int j = 0;j<COLUMNAS;j++){
-                System.out.print(" " + tablero[i][j]);
+                System.out.print(" " + tablero[i][j] + " ");
                 }
             
             System.out.println();
         }
-
-        System.out.println("  -----------");
-        System.out.print("   ");
+        System.out.print("  ");
+        for(int i = 0;i<COLUMNAS;i++){
+        System.out.print("---");
+        }
+        System.out.print("\n  ");
         for (int i = 0; i < COLUMNAS; i++) {
-            System.out.print(i + " ");
+            System.out.print(" " + i + " ");
         }
         System.out.println("\n");
     }
@@ -106,16 +108,19 @@ public class Ej28 {
         for (int i = FILAS - 1; i >= 0; i--) {
             System.out.print(i + "|");
             for (int j = 0; j < COLUMNAS; j++) {
-                System.out.print(" " + tablero[i][j]);
+                System.out.print(" " + tablero[i][j] + " ");
             }
             System.out.println();
         }
 
-        System.out.println("  ---------");
-        System.out.print("   ");
-        for (int i = 0; i < COLUMNAS; i++) {
-            System.out.print(i + " ");
+        System.out.print("  ");
+        for(int i = 0;i<COLUMNAS;i++){
+        System.out.print("---");
         }
-        System.out.println();
+        System.out.print("\n  ");
+        for (int i = 0; i < COLUMNAS; i++) {
+            System.out.print(" " + i + " ");
+        }
+        System.out.println("\n");
     }
 }
