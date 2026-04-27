@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 public class App {
 
@@ -28,19 +29,26 @@ public class App {
                 
                 switch(opcion) {
                     case 1:
+                        System.out.println("LISTADO DE LOS PARQUES : \n======================================");
                         listadoParques(conexion);
                     break ;
                     
                     case 2: 
+                        System.out.println("AÑADIR PARQUE : \n======================================"); 
                         aniadirParque(conexion);
                     break ;
-                    case 3: 
+                    case 3:
+                        System.out.println("PARQUE SOLICITADO : \n======================================"); 
                         buscarParque(conexion);
                     break ;
                     case 4: 
+                        System.out.println("EDITAR PARQUE : \n======================================"); 
                         editarParque(conexion);
                     break ;
-                    case 5: break ;
+                    case 5: 
+                        System.out.println("BORRAR PARQUE : \n======================================"); 
+                        borrarParque(conexion);
+                    break ;
                     case 0: break ;
                     default: 
                         System.out.println("**ERROR: opción incorrecta.");
@@ -163,54 +171,135 @@ public class App {
 
     private static void editarParque(Connection conexion) throws SQLException{
 
-        String sql ;
-        String nombre;
-        String nuevonombre;
+        // String sql ;
+        // String nombre;
+        // String nuevonombre;
+        // String ubicacion;
+        // String equipamiento;
+        
+
+        // System.out.print("Nombre del parque que desea modificar: ");
+        // nombre = System.console().readLine();
+        // System.out.print("Ingrese el nuevo nombre: ");
+        // nuevonombre = System.console().readLine();
+        // System.out.print("Ingrese la nueva ubicacion: ");
+        // ubicacion = System.console().readLine();
+        // System.out.print("Ingrese el nuevo equipamiento: ");
+        // equipamiento = System.console().readLine();
+
+
+
+        //USAR IFS SOLO PARA CAMBIAR LA CONSULTA SQL******** 
+        
+        // if(!nuevonombre.isBlank()){
+        //     sql = "UPDATE Parque SET Nombre = ? WHERE Nombre = ?;";
+        //     PreparedStatement pstmt = conexion.prepareStatement(sql);
+        //     pstmt = conexion.prepareStatement(sql);
+        //     pstmt.setString(1, nuevonombre);
+        //     pstmt.setString(2, nombre);
+
+        //     pstmt.executeUpdate();
+        //     pstmt.close();
+        //     nombre = nuevonombre;
+        // }
+        // if(!ubicacion.isBlank()){
+        //     sql = "UPDATE Parque SET Ubicacion = ? WHERE Nombre = ?;";
+        //     PreparedStatement pstmt = conexion.prepareStatement(sql);
+        //     pstmt = conexion.prepareStatement(sql);
+        //     pstmt.setString(1, ubicacion);
+        //     pstmt.setString(2, nombre);
+
+        //     pstmt.executeUpdate();
+        //     pstmt.close();
+        // }
+        // if(!equipamiento.isBlank()){
+        //     sql = "UPDATE Parque SET Equipamiento = ? WHERE Nombre = ?;";
+        //     PreparedStatement pstmt = conexion.prepareStatement(sql);
+        //     pstmt = conexion.prepareStatement(sql);
+        //     pstmt.setString(1, equipamiento);
+        //     pstmt.setString(2, nombre);
+
+        //     pstmt.executeUpdate();
+        //     pstmt.close();
+        // }
+        /*Hacer con HashMap*/
+
         String ubicacion;
+        String ubicacionOriginal;
+        String nombre;
         String equipamiento;
-        
 
-        System.out.print("Nombre del parque que desea modificar: ");
-        nombre = System.console().readLine();
-        System.out.print("Ingrese el nuevo nombre: ");
-        nuevonombre = System.console().readLine();
-        System.out.print("Ingrese la nueva ubicacion: ");
+        HashMap<String, String> parametros = new HashMap<>();
+
+        // preguntamos por el parque a borrar
+        System.out.print("ubicacion (en blanco para volver): ");
         ubicacion = System.console().readLine();
-        System.out.print("Ingrese el nuevo equipamiento: ");
-        equipamiento = System.console().readLine();
 
-        if(!nuevonombre.isBlank()){
-            sql = "UPDATE Parque SET Nombre = ? WHERE Nombre = ?;";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt = conexion.prepareStatement(sql);
-            pstmt.setString(1, nuevonombre);
-            pstmt.setString(2, nombre);
+        ubicacionOriginal = ubicacion;
 
-            pstmt.executeUpdate();
-            pstmt.close();
-            nombre = nuevonombre;
+        if (!ubicacion.isEmpty()) {
+
+            // preguntamos datos del parque a editar
+            System.out.print("Nombre (en blanco para no editarlo): ");
+            nombre = System.console().readLine();
+            if (!nombre.isEmpty()) { parametros.put("nombre = ?", nombre); }
+
+            System.out.print("equipamiento (en blanco para no editarlo): ");
+            equipamiento = System.console().readLine();
+            if (!equipamiento.isEmpty()) { parametros.put("equipamiento = ?", equipamiento); }
+
+            System.out.print("ubicacion (en blanco para no editarlo): ");
+            ubicacion = System.console().readLine();
+            if (!ubicacion.isEmpty()) { parametros.put("ubicacion = ?", ubicacion); }
+
+            // construimos la consulta SQL
+            String sql = "UPDATE Parque SET " + String.join(", ", parametros.keySet()) + " WHERE ubicacion = ? ;";
+            PreparedStatement stmt = conexion.prepareStatement(sql);
+
+            // vinculamos los parámetros a los marcadores
+            int posicion = 1;
+            for (String valor : parametros.values()) {
+                stmt.setString(posicion++, valor);
+            }
+            stmt.setString(posicion, ubicacionOriginal);
+
+            // lanzamos la consulta
+            int parquesActualizados = stmt.executeUpdate();
+
+            // mostramos mensaje
+            if (parquesActualizados == 0) {
+                System.out.printf("No se ha encontrado el parque con ubicacion %s\n", ubicacion);
+            } else {
+                System.out.printf("Se ha actualizado correctamente el parque con ubicacion %s\n", ubicacion);
+            }
+
+            stmt.close();
         }
-        if(!ubicacion.isBlank()){
-            sql = "UPDATE Parque SET Ubicacion = ? WHERE Nombre = ?;";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt = conexion.prepareStatement(sql);
-            pstmt.setString(1, ubicacion);
-            pstmt.setString(2, nombre);
+            }
 
-            pstmt.executeUpdate();
-            pstmt.close();
-        }
-        if(!equipamiento.isBlank()){
-            sql = "UPDATE Parque SET Equipamiento = ? WHERE Nombre = ?;";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt = conexion.prepareStatement(sql);
-            pstmt.setString(1, equipamiento);
-            pstmt.setString(2, nombre);
+            private static void borrarParque(Connection conexion) throws SQLException{
 
-            pstmt.executeUpdate();
-            pstmt.close();
-        }
+                String sql = "DELETE FROM Parque WHERE ubicacion = ?;";
+                String ubicacion;
+                
         
-    }
+                System.out.print("Ubicacion del parque que desea eliminar : ");
+                ubicacion = System.console().readLine();
+                
+                
+        
+                PreparedStatement pstmt = conexion.prepareStatement(sql);
+                pstmt.setString(1, ubicacion);
+        
+                int filasInsertadas = pstmt.executeUpdate();
+        
+                if (filasInsertadas==0) {
+                    System.out.println("No se eliminó ningún parque de calistenia :)");
+                }else{
+                    System.out.println("Tu parque ha sido brutalmente demolido y detonado de la base de datos :/");
+                }
+                pstmt.close();
+        
+            }
 
 }
